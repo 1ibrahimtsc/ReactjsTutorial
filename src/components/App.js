@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import First from './First/First'
+import First from './First/First';
+import Counter from './Counter/Counter';
 
 class App extends Component {
   
@@ -13,7 +14,7 @@ class App extends Component {
 
         <First name='Mr Rana' designation='webdegiener' location='Kustia, Bangladesh' />
         
-        
+        <Counter />
       </div>
     ); 
    
