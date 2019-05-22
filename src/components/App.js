@@ -1,38 +1,40 @@
 import React, {Component} from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import First from './First/First';
-import Counter from './Counter/Counter';
 
 class App extends Component {
   
-  state = {
-    person: [
-      { name: 'ibrahim', email: 'ibrahimvoc@yahoo.com', address: 'Mirpur, Dhaka' },
-      { name: 'Rony', email: 'Rony@yahoo.com', address: 'Danmondi, Dhaka' },
-      { name: 'Anis', email: 'Anis@yahoo.com', address: 'Mirpur, Dhaka' }
-    ]
+  state = { name: '' }
+
+  clickHandler = (event) => {
+   // alert('I have clicked')
+    console.log(event.target.value)
+  }
+
+  inputHandler = (event) => {
+    
+    this.setState({
+      name: event.target.value
+    }) 
+    //console.log(event.target.value)
   }
 
   render() {
 
     return (
       <div className="App">
-        { this.state.person.map((people, index) => {
-          return <First 
-                  key={ index } 
-                  name={ people.name } 
-                  email={ people.email } 
-                  address= { people.address } 
-                  />
-        }) }
+        <div className="container my-3">
+          <input onChange={ this.inputHandler }
+          type="text" value={ this.state.name } placeholder="Enter Your Name"
+           />
+          <button className="btn btn-primary" onClick={ (event) => console.log(event) } >Click Me</button>
+        </div>
 
-        <Counter />
+        { this.state.name ? <p>Hello Mr . { this.state.name } </p> : '' }
       </div>
     ); 
    
   } 
-
  
 }
 
