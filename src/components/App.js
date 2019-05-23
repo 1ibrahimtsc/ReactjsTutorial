@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import './App.css';
 // import Books from './Books/Books';
 
+
 class App extends Component {
   
   state = { 
@@ -13,11 +14,18 @@ class App extends Component {
       { name: 'Php', price: 45, id: 5 } ]
    }
 
+   deleteHandler =(id) => {
+     let newBooks = this.state.books.filter(book => book.id != id)
+     this.setState({
+       books:newBooks
+     })
+   }
+
     render() {
 
     return (
       <div className="App">
-        <Books books={ this.state.books } />
+        <Books deleteHandler={this.deleteHandler.bind(this) } books={ this.state.books } />
       </div>
     ); 
    
@@ -32,7 +40,7 @@ class Books extends Component {
           <div>
               { this.props.books.map(book => {
                   return (
-                      <Book name={ book.name } price={ book.price } />
+                      <Book deleteHandler={ this.props.deleteHandler } book={ book } />
                   )
               }) }
           </div>
@@ -45,10 +53,10 @@ class Book extends Component {
   render(){
       return(
           <li className='list-group-item d-flex' >
-             <p> { this.props.name } </p>
-             <span className='ml-auto'> ${ this.props.price } </span>
+             <p> { this.props.book.name } </p>
+             <span className='ml-auto'> ${ this.props.book.price } </span>
              <div className='mx-4'>
-                 <span>
+                 <span onClick={ () => this.props.deleteHandler(this.props.book.id) } >
                      <i className="fas fa-trash"></i>
                  </span>
              </div> 
