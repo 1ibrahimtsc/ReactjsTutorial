@@ -50,13 +50,20 @@ class Books extends Component {
 
 
 class Book extends Component {
+
+  state = {
+    isEditable: false
+  }
   render(){
+
+    let output = this.state.isEditable ? <input type='text' placeholder='Enter Name' value={ this.props.book.name } /> : <p> { this.props.book.name }</p>
       return(
           <li className='list-group-item d-flex' >
-             <p> { this.props.book.name } </p>
+            { output }
              <span className='ml-auto'> ${ this.props.book.price } </span>
              <div className='mx-4'>
-                 <span onClick={ () => this.props.deleteHandler(this.props.book.id) } >
+                 <span style={{cursor: 'pointer'}} onClick={ ()=> this.setState({isEditable: true })} className='mx-2'> <i className="fas fa-edit"></i></span>
+                 <span style={{cursor: 'pointer'}} onClick={ () => this.props.deleteHandler(this.props.book.id) } >
                      <i className="fas fa-trash"></i>
                  </span>
              </div> 
