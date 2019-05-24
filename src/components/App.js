@@ -4,6 +4,7 @@ import './App.css';
 // import Books from './Books/Books';
 
 import axios from 'axios';
+import PostForm from './forms/PostForm';
 
 
 class App extends Component {
@@ -29,9 +30,9 @@ class App extends Component {
     } else {
       return (
         <div className='container'>
-          <ul className='list-group'>
-           { posts.map(post => <li key={post.id } className='list-group-item'> { post.title } </li>) }
-          </ul>
+          <div className="col-sm-8 offset-sm-2">
+             <PostForm />
+          </div>
         </div>
       )
     }
