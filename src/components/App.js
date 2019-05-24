@@ -20,12 +20,33 @@ class App extends Component {
        books:newBooks
      })
    }
+    
+   changeHandler = (name, id) => {
+      let newBooks = this.state.books.map(book => {
+        if(id === book.id){
+          return {
+            ... book,
+            //name: name
+            name
+          }
+        }
+        return book
+      })
 
+      this.setState({
+        books: newBooks
+      })
+   }
+    
     render() {
 
     return (
       <div className="App">
-        <Books deleteHandler={this.deleteHandler.bind(this) } books={ this.state.books } />
+        <Books
+        changeHandler={ this.changeHandler.bind(this) }
+        deleteHandler={ this.deleteHandler.bind(this) } 
+        books={ this.state.books }
+         />
       </div>
     ); 
    
@@ -40,7 +61,11 @@ class Books extends Component {
           <div>
               { this.props.books.map(book => {
                   return (
-                      <Book deleteHandler={ this.props.deleteHandler } book={ book } />
+                      <Book
+                      changeHandler={ this.props.changeHandler } 
+                      deleteHandler={ this.props.deleteHandler }
+                      book={ book } 
+                      />
                   )
               }) }
           </div>
@@ -56,7 +81,10 @@ class Book extends Component {
   }
   render(){
 
-    let output = this.state.isEditable ? <input type='text' placeholder='Enter Name' value={ this.props.book.name } /> : <p> { this.props.book.name }</p>
+    let output = this.state.isEditable ? 
+    <input 
+    onChange={ (e) => this.props.changeHandler(e.target.value, this.props.book.id) }
+    type='text' placeholder='Enter Name' value={ this.props.book.name } /> : <p> { this.props.book.name }</p>
       return(
           <li className='list-group-item d-flex' >
             { output }
