@@ -3,113 +3,41 @@ import React, {Component} from 'react';
 import './App.css';
 // import Books from './Books/Books';
 
+import axios from 'axios';
+
 
 class App extends Component {
-  
-  state = { 
-    books: [ { name: 'Javascript', price: 20, id: 1  },
-      { name: 'React', price: 30, id: 2 },
-      { name: 'Java', price: 25, id: 3 },
-      { name: 'python', price: 35, id: 4 },
-      { name: 'Php', price: 45, id: 5 } ]
-   }
 
-   deleteHandler =(id) => {
-     let newBooks = this.state.books.filter(book => book.id != id)
-     this.setState({
-       books:newBooks
-     })
-   }
-    
-   changeHandler = (name, id) => {
-      let newBooks = this.state.books.map(book => {
-        if(id === book.id){
-          return {
-            ... book,
-            //name: name
-            name
-          }
-        }
-        return book
-      })
+    state = {
+      posts: []
+    }
 
-      this.setState({
-        books: newBooks
+    componentDidMount(){
+      axios.get('https://jsonplaceholder.typicode.com/posts')
+      .then(response => {
+        this.setState({
+          posts: response.data
+        })
       })
-   }
-    
+      .catch(error => console.log(error))
+    }
     render() {
-
-    return (
-      <div className="App">
-        <Books
-        changeHandler={ this.changeHandler.bind(this) }
-        deleteHandler={ this.deleteHandler.bind(this) } 
-        books={ this.state.books }
-         />
-      </div>
-    ); 
+   // console.log(this.state)
+    let { posts } = this.state
+    if(posts.length === 0){
+     return <h1 style={{textAlign: 'center'}}> Loading... </h1>
+    } else {
+      return (
+        <div className='container'>
+          <ul className='list-group'>
+           { posts.map(post => <li key={post.id } className='list-group-item'> { post.title } </li>) }
+          </ul>
+        </div>
+      )
+    }
    
   } 
  
-}
-
-
-class Books extends Component {
-  render(){
-      return (
-          <div>
-              { this.props.books.map(book => {
-                  return (
-                      <Book
-                      changeHandler={ this.props.changeHandler } 
-                      deleteHandler={ this.props.deleteHandler }
-                      book={ book } 
-                      />
-                  )
-              }) }
-          </div>
-      )
-  }
-}
-
-
-class Book extends Component {
-
-  state = {
-    isEditable: false
-  };
-
-  changeKeyHandler = (event) => {
-    //console.log(event.key);
-    if(event.key === 'Enter'){
-      //console.log('You Press Enter Key');
-      this.setState({
-        isEditable: false
-      })
-    }
-  }
-
-  render(){
-
-    let output = this.state.isEditable ? 
-    <input 
-    onChange={ (e) => this.props.changeHandler(e.target.value, this.props.book.id) }
-    onKeyPress = { this.changeKeyHandler }
-    type='text' placeholder='Enter Name' value={ this.props.book.name } /> : <p> { this.props.book.name }</p>
-      return(
-          <li className='list-group-item d-flex' >
-            { output }
-             <span className='ml-auto'> ${ this.props.book.price } </span>
-             <div className='mx-4'>
-                 <span style={{cursor: 'pointer'}} onClick={ ()=> this.setState({isEditable: true })} className='mx-2'> <i className="fas fa-edit"></i></span>
-                 <span style={{cursor: 'pointer'}} onClick={ () => this.props.deleteHandler(this.props.book.id) } >
-                     <i className="fas fa-trash"></i>
-                 </span>
-             </div> 
-          </li>
-      )
-  }
 }
 
 
