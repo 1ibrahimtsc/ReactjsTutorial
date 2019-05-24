@@ -78,12 +78,24 @@ class Book extends Component {
 
   state = {
     isEditable: false
+  };
+
+  changeKeyHandler = (event) => {
+    //console.log(event.key);
+    if(event.key === 'Enter'){
+      //console.log('You Press Enter Key');
+      this.setState({
+        isEditable: false
+      })
+    }
   }
+
   render(){
 
     let output = this.state.isEditable ? 
     <input 
     onChange={ (e) => this.props.changeHandler(e.target.value, this.props.book.id) }
+    onKeyPress = { this.changeKeyHandler }
     type='text' placeholder='Enter Name' value={ this.props.book.name } /> : <p> { this.props.book.name }</p>
       return(
           <li className='list-group-item d-flex' >
